@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Filled with Dots</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container" id="heart-container"></div>
+
+    <script>
+        const heartContainer = document.getElementById('heart-container');
+        function heartFormula(t) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+            return { x, y };
+        }
+        function drawHeart() {
+            const totalHeartDots = 2000; 
+            const totalAngle = Math.PI * 2;
+
+            for (let i = 0; i < totalHeartDots; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                const randomAngle = Math.random() * totalAngle; 
+                const scale = Math.random() * 0.7 + 0.3;
+                const heartPos = heartFormula(randomAngle);
+                const x = heartPos.x * scale * 12 + 200; 
+                const y = -heartPos.y * scale * 12 + 200;
+
+                dot.style.left = `${x}px`;
+                dot.style.top = `${y}px`;
+
+               
+                const colors = ["#ff416c", "#ff4b2b", "#ff9a9e", "#f67280", "#fa8072"];
+                dot.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]}, transparent)`;
+
+                heartContainer.appendChild(dot);
+            }
+        }
+        function createStars() {
+            const totalStars = 250; 
+            for (let i = 0; i < totalStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('dot');
+
+               
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+
+                
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+
+                document.body.appendChild(star);
+            }
+        }
+
+        drawHeart(); 
+        createStars(); 
+    </script>
+</body>
+</html>
